@@ -1,0 +1,12 @@
+.env
+venv/
+__pycache__/
+*.pyc
+backend/media/*
+!backend/media/.gitkeep
+backend/staticfiles/
+node_modules/
+.expo/
+mobile/node_modules/
+mobile/.expo/
+mobile/.env

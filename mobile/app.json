@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "MiniGram",
+    "slug": "minigram",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "minigram",
+    "userInterfaceStyle": "light",
+    "ios": { "supportsTablet": false },
+    "android": { "package": "com.minigram.app" },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "MiniGram needs access to your photos so you can share posts and set a profile picture."
+        }
+      ]
+    ]
+  }
+}

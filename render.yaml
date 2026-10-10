@@ -1,0 +1,34 @@
+# Render Blueprint. Assumes the Git repo root is this folder (contains backend/ and mobile/).
+databases:
+  - name: minigram-db
+    databaseName: minigram
+    user: minigram
+    plan: free            # check Render's current free-database limits; upgrade for real use
+
+services:
+  - type: web
+    name: minigram-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    # Uploaded photos need a persistent disk, which requires a paid instance type.
+    # On the free plan remove the `disk:` block below: it works, but uploads vanish on restart/redeploy.
+    plan: starter
+    healthCheckPath: /healthz/
+    disk:
+      name: minigram-media
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: minigram-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SIGNING_KEY
+        generateValue: true
+      - key: MEDIA_ROOT
+        value: /var/data/media
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
