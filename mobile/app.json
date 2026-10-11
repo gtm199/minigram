@@ -6,8 +6,15 @@
     "orientation": "portrait",
     "scheme": "minigram",
     "userInterfaceStyle": "light",
-    "ios": { "supportsTablet": false },
-    "android": { "package": "com.minigram.app" },
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "com.minigram.app",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
     "plugins": [
       "expo-router",
       "expo-secure-store",
@@ -16,7 +23,15 @@
         {
           "photosPermission": "MiniGram needs access to your photos so you can share posts and set a profile picture."
         }
-      ]
-    ]
+      ],
+      "expo-status-bar"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "07c214e0-fec3-49ea-bcbd-deb68dda59c2"
+      }
+    },
+    "owner": "gtm199"
   }
 }

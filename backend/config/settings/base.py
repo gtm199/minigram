@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "apps.likes",
     "apps.comments",
     "apps.notifications",
+    "apps.chats",
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,7 @@ REST_FRAMEWORK = {
         "auth": "10/min",
         "post_create": "60/hour",
         "comment_create": "120/hour",
+        "message_create": "120/min",
     },
     "EXCEPTION_HANDLER": "apps.core.exceptions.custom_exception_handler",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
