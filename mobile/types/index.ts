@@ -119,3 +119,20 @@ export interface ImageFile {
 }
 
 export type SortMode = "recent" | "popular";
+
+export interface Conversation {
+  id: number;
+  other_user: PostAuthor;
+  last_message: { text: string; sender_id: number; created_at: string } | null;
+  unread_count: number;
+  last_message_at: string;
+}
+
+export interface Message {
+  id: number;
+  conversation: number;
+  sender: PostAuthor;
+  text: string;
+  created_at: string;
+  read_at: string | null;
+}

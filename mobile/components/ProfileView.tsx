@@ -1,6 +1,8 @@
+import { startConversation } from "../services/chatService";
+
 import { useRouter } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator,Alert, FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
 
 import { usePosts } from "../hooks/usePosts";
 import { getUserPosts } from "../services/postService";
@@ -64,6 +66,18 @@ export function ProfileView({ username }: { username: string }) {
     return profileError ? <ErrorState message={profileError} onRetry={loadProfile} /> : <Loading />;
   }
 
+  const openChat = async () => {
+    try {
+      const conversation = await startConversation(profile.username);
+      router.push({
+        pathname: "/chat",
+        params: { id: String(conversation.id), username: profile.username },
+      });
+    } catch (e) {
+      Alert.alert("Couldn't open chat", getErrorMessage(e));
+    }
+  };
+
   const header = (
     <View style={styles.header}>
       <View style={styles.topRow}>
@@ -91,11 +105,18 @@ export function ProfileView({ username }: { username: string }) {
         {profile.is_me ? (
           <Button title="Edit Profile" variant="secondary" onPress={() => router.push("/edit-profile")} />
         ) : (
-          <FollowButton
-            username={profile.username}
-            initialFollowing={profile.is_following}
-            onChange={handleFollowChange}
-          />
+            <View style={styles.actionRow}>
+              <View style={{ flex: 1 }}>
+                <FollowButton
+                  username={profile.username}
+                  initialFollowing={profile.is_following}
+                  onChange={handleFollowChange}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Button title="Message" variant="secondary" onPress={openChat} />
+              </View>
+            </View>
         )}
       </View>
     </View>
@@ -136,4 +157,5 @@ const styles = StyleSheet.create({
   fullName: { fontSize: 14, color: COLORS.text },
   bio: { fontSize: 14, color: COLORS.text, marginTop: 2 },
   actions: { marginTop: 12 },
+  actionRow: { flexDirection: "row", gap: 8 },
 });

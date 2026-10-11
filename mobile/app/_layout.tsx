@@ -44,6 +44,8 @@ function RootNavigator() {
         <Stack.Screen name="followers/[username]" options={{ title: "Followers" }} />
         <Stack.Screen name="following/[username]" options={{ title: "Following" }} />
         <Stack.Screen name="settings" options={{ title: "Settings" }} />
+        <Stack.Screen name="messages" options={{ title: "Messages" }} />
+        <Stack.Screen name="chat" options={{ title: "Chat" }} />
       </Stack>
       {initializing ? (
         <View style={[StyleSheet.absoluteFill, { backgroundColor: COLORS.background }]}>
