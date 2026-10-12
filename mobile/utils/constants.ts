@@ -21,4 +21,4 @@ export const RADIUS = { sm: 8, md: 12, lg: 20, pill: 999 } as const;
 export const LIMITS = { caption: 2200, comment: 500, bio: 300 } as const;
 export const SEARCH_DEBOUNCE_MS = 400;
 export const REQUEST_TIMEOUT_MS = 15000;
-export const UPLOAD_TIMEOUT_MS = 60000;
+export const UPLOAD_TIMEOUT_MS = 180000;

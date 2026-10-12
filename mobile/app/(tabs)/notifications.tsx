@@ -34,7 +34,13 @@ function NotificationRow({ item }: { item: AppNotification }) {
         </Text>
         <Text style={styles.time}>{timeAgo(item.created_at)}</Text>
       </View>
-      {item.post ? <Image source={{ uri: item.post.image }} style={styles.thumb} /> : null}
+      {item.post ? (
+        item.post.image ? (
+          <Image source={{ uri: item.post.image }} style={styles.thumb} />
+        ) : (
+          <View style={[styles.thumb, { backgroundColor: "#111111" }]} />
+        )
+      ) : null}
       {!item.is_read ? <View style={styles.dot} /> : null}
     </Pressable>
   );

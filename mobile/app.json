@@ -25,7 +25,8 @@
           "photosPermission": "MiniGram needs access to your photos so you can share posts and set a profile picture."
         }
       ],
-      "expo-status-bar"
+      "expo-status-bar",
+      "expo-video"
     ],
     "extra": {
       "router": {},

@@ -37,3 +37,21 @@ def validate_image_upload(file):
         raise ValidationError(
             f"Image must be at most {settings.MAX_IMAGE_DIMENSION}px on each side."
         )
+
+ALLOWED_VIDEO_CONTENT_TYPES = {"video/mp4", "video/quicktime", "video/x-m4v"}
+
+
+def validate_video_upload(file):
+    """Validate size, declared type and the real file signature (MP4/MOV files carry 'ftyp')."""
+    max_mb = settings.MAX_VIDEO_SIZE_MB
+    if file.size > max_mb * 1024 * 1024:
+        raise ValidationError(f"Video must be smaller than {max_mb} MB.")
+
+    content_type = getattr(file, "content_type", None)
+    if content_type and content_type not in ALLOWED_VIDEO_CONTENT_TYPES:
+        raise ValidationError("Only MP4 and MOV videos are allowed.")
+
+    header = file.read(12)
+    file.seek(0)
+    if len(header) < 12 or header[4:8] != b"ftyp":
+        raise ValidationError("Upload a valid MP4 or MOV video.")

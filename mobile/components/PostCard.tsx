@@ -12,6 +12,7 @@ import { emitPostDeleted, emitPostUpdated } from "../utils/events";
 import { pluralize, timeAgo } from "../utils/format";
 import { Avatar } from "./Avatar";
 import { LikeButton } from "./LikeButton";
+import { PostVideo } from "./PostVideo";
 
 function PostCardComponent({ post }: { post: Post }) {
   const router = useRouter();
@@ -99,9 +100,13 @@ function PostCardComponent({ post }: { post: Post }) {
         </Pressable>
       </View>
 
-      <Pressable onPress={() => router.push(`/post/${post.id}`)}>
-        <Image source={{ uri: post.image }} style={styles.image} resizeMode="cover" />
-      </Pressable>
+      {post.media_type === "video" && post.video ? (
+        <PostVideo uri={post.video} />
+      ) : (
+        <Pressable onPress={() => router.push(`/post/${post.id}`)}>
+          <Image source={{ uri: post.image ?? "" }} style={styles.image} resizeMode="cover" />
+        </Pressable>
+      )}
 
       <View style={styles.actions}>
         <LikeButton liked={post.is_liked} count={post.likes_count} onPress={toggleLike} />

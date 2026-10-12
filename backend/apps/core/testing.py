@@ -30,7 +30,13 @@ class APITestBase(APITestCase):
     @classmethod
     def setUpClass(cls):
         cls._media_dir = tempfile.mkdtemp()
-        cls._override = override_settings(MEDIA_ROOT=cls._media_dir)
+        cls._override = override_settings(
+            MEDIA_ROOT=cls._media_dir,
+            STORAGES={
+                "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+                "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+            },
+        )
         cls._override.enable()
         super().setUpClass()
 

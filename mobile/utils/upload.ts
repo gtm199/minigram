@@ -6,8 +6,17 @@ export function assetToImageFile(asset: ImagePickerAsset): ImageFile {
   const extension = asset.uri.split(".").pop()?.toLowerCase();
   const type =
     asset.mimeType ??
-    (extension === "png" ? "image/png" : extension === "webp" ? "image/webp" : "image/jpeg");
-  const name = asset.fileName ?? `upload.${type.split("/")[1] ?? "jpg"}`;
+    (asset.type === "video"
+      ? extension === "mov"
+        ? "video/quicktime"
+        : "video/mp4"
+      : extension === "png"
+        ? "image/png"
+        : extension === "webp"
+          ? "image/webp"
+          : "image/jpeg");
+  const fallbackExt = type === "video/quicktime" ? "mov" : (type.split("/")[1] ?? "jpg");
+  const name = asset.fileName ?? `upload.${fallbackExt}`;
   return { uri: asset.uri, name, type };
 }
 

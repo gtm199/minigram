@@ -56,7 +56,9 @@ export interface PostAuthor {
 export interface Post {
   id: number;
   user: PostAuthor;
-  image: string;
+  image: string | null;
+  video: string | null;
+  media_type: "image" | "video";
   caption: string;
   likes_count: number;
   comments_count: number;
@@ -79,7 +81,7 @@ export interface AppNotification {
   id: number;
   sender: PostAuthor;
   notification_type: NotificationType;
-  post: { id: number; image: string } | null;
+  post: { id: number; image: string | null } | null;
   is_read: boolean;
   created_at: string;
 }

@@ -58,7 +58,7 @@ export default function EditPostScreen() {
     <Screen>
       <KeyboardView>
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-          <Image source={{ uri: post.image }} style={styles.image} resizeMode="cover" />
+          {post.image ? <Image source={{ uri: post.image }} style={styles.image} resizeMode="cover" /> : null}
           <FormInput control={control} name="caption" label="Caption" multiline maxLength={LIMITS.caption} />
           <Button title="Save" onPress={onSubmit} loading={isSubmitting} />
         </ScrollView>

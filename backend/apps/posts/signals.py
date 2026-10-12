@@ -6,7 +6,9 @@ from .models import Post
 
 
 @receiver(post_delete, sender=Post)
-def delete_image_file(sender, instance, **kwargs):
-    """Remove the file from disk when a post is deleted, including cascades from user deletion."""
+def delete_media_files(sender, instance, **kwargs):
+    """Remove the files from disk when a post is deleted, including cascades from user deletion."""
     if instance.image:
         transaction.on_commit(lambda: instance.image.delete(save=False))
+    if instance.video:
+        transaction.on_commit(lambda: instance.video.delete(save=False))

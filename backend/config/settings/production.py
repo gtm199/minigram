@@ -16,7 +16,7 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[]) + (
 SECURE_REDIRECT_EXEMPT = [r"^healthz/?$"]
 
 # Serve uploaded images from Django (fine for a small app; use S3/Cloudinary to scale).
-SERVE_MEDIA_FROM_DJANGO = env.bool("SERVE_MEDIA_FROM_DJANGO", default=True)
+SERVE_MEDIA_FROM_DJANGO = env.bool("SERVE_MEDIA_FROM_DJANGO", default=not USE_CLOUDINARY)
 
 SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=True)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -31,6 +31,6 @@ X_FRAME_OPTIONS = "DENY"
 MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "default": STORAGES["default"],  # Cloudinary when configured, otherwise local disk
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }

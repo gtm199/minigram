@@ -104,8 +104,36 @@ MEDIA_ROOT = env("MEDIA_ROOT", default=str(BASE_DIR / "media"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# ---- Cloudinary (media storage) ----
+CLOUDINARY_CLOUD_NAME = env("CLOUDINARY_CLOUD_NAME", default="")
+CLOUDINARY_API_KEY = env("CLOUDINARY_API_KEY", default="")
+CLOUDINARY_API_SECRET = env("CLOUDINARY_API_SECRET", default="")
+USE_CLOUDINARY = bool(CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET)
+
+if USE_CLOUDINARY:
+    import cloudinary
+
+    cloudinary.config(
+        cloud_name=CLOUDINARY_CLOUD_NAME,
+        api_key=CLOUDINARY_API_KEY,
+        api_secret=CLOUDINARY_API_SECRET,
+        secure=True,
+    )
+
+STORAGES = {
+    "default": {
+        "BACKEND": (
+            "apps.core.storage.CloudinaryMediaStorage"
+            if USE_CLOUDINARY
+            else "django.core.files.storage.FileSystemStorage"
+        )
+    },
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
+
 # ---- Uploads ----
 MAX_IMAGE_SIZE_MB = env.int("MAX_IMAGE_SIZE_MB", default=5)
+MAX_VIDEO_SIZE_MB = env.int("MAX_VIDEO_SIZE_MB", default=25) # video 
 MAX_IMAGE_DIMENSION = 6000  # pixels, width or height
 MIN_IMAGE_DIMENSION = 100
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024

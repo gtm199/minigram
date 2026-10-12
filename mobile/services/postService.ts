@@ -35,8 +35,9 @@ export async function getPost(id: number): Promise<Post> {
   return data.data;
 }
 
-export async function createPost(caption: string, image: ImageFile): Promise<Post> {
-  const form = buildFormData({ caption }, "image", image);
+export async function createPost(caption: string, media: ImageFile): Promise<Post> {
+  const field = media.type.startsWith("video/") ? "video" : "image";
+  const form = buildFormData({ caption }, field, media);
   const { data } = await api.post<Envelope<Post>>("/posts/", form, {
     headers: { "Content-Type": "multipart/form-data" },
     timeout: UPLOAD_TIMEOUT_MS,
