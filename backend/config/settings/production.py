@@ -7,10 +7,14 @@ DEBUG = False
 
 # Render sets RENDER_EXTERNAL_HOSTNAME automatically; add custom domains via ALLOWED_HOSTS.
 _render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[]) + ([_render_host] if _render_host else [])
-CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[]) + (
-    [f"https://{_render_host}"] if _render_host else []
-)
+
+# Kuberns serves each deployment at <app>-<branch>-<hash>.kuberns.cloud, and the hash changes
+# per deploy, so allow the whole domain (the leading dot matches any subdomain).
+_platform_hosts = [".kuberns.cloud"] + ([_render_host] if _render_host else [])
+_platform_origins = ["https://*.kuberns.cloud"] + ([f"https://{_render_host}"] if _render_host else [])
+
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[]) + _platform_hosts
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[]) + _platform_origins
 
 # The platform's health checker may call over plain HTTP; do not redirect it.
 SECURE_REDIRECT_EXEMPT = [r"^healthz/?$"]
